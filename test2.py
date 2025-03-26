@@ -3,9 +3,17 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sklearn.preprocessing import MultiLabelBinarizer, StandardScaler
 from sklearn.metrics.pairwise import cosine_similarity
+import os
+
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
 
 # 1. Connect to PostgreSQL Database and Fetch Data
-engine = create_engine('postgresql://postgres:Eggroll%4012@localhost:5432/movies_db')
+DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+engine = create_engine(DATABASE_URL)
 query_movies = "SELECT movie_id, title, genre, imdb_rating, release_year FROM movies"
 query_user_movies = "SELECT movie_title FROM usermovies WHERE user_id = (SELECT user_id FROM users WHERE username = 'ryan')"
 
